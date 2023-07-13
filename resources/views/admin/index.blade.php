@@ -3,6 +3,7 @@
   <head>
       <meta charset="utf-8"/>
       <title>Products</title>
+      <link rel="icon" type="image/png" href="images/images.png">
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"/>
       <style>
       footer {
@@ -60,7 +61,7 @@
                   </div>
                   <div class="pull-right mb-2">
                       <a class="btn btn-success"href="{{route('admin.create')}}">Create Product</a>
-                      <a class="btn btn-success"href="{{route('category.create')}}">Create Category</a>
+                      <a class="btn btn-success"href="{{route('category.index')}}">Create Category</a>
                       <a class="btn btn-success"href="{{route('home.index')}}">User Panel</a>
                   </div>
               </div>
@@ -73,6 +74,8 @@
           <table class="table table-bordered">
               <thead>
                   <tr>
+                      <th>Category</th>
+                      <th>SubCategory</th>
                       <th>Name</th>
                       <th>Description</th>
                       <th>Price</th>
@@ -84,6 +87,8 @@
               <tbody>
                   @foreach($products as $product)
                   <tr>
+                      <td>{{$product->category->name}}</td>
+                      <td>{{$product->sub_category}}</td>
                       <td>{{$product->name}}</td>
                       <td>{{$product->description}}</td>
                       <td>{{$product->price}}</td>

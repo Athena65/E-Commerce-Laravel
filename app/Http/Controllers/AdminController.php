@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\SubCategory;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -35,6 +36,10 @@ class AdminController extends Controller
         $product=new Product;
         $product->name=$request->input('name');
         $product->category_id=$request->input('category_id');
+
+
+        //$product->quantity=0;
+        $product->sub_category=$request->input('sub_category');
         $product->price=$request->input('price');
         $product->description=$request->input('description');
         $product->discount=$request->input('discount');
@@ -42,6 +47,13 @@ class AdminController extends Controller
             $imagePath = $request->file('image')->store('products', 'public');
             $product->image = $imagePath;
         }
+
+        $category = Category::findOrFail($product->category_id);
+        $subCategory = new SubCategory();
+        $subCategory->name = $request->input('sub_category');
+
+        $category->subCategories()->save($subCategory);
+
         $product->save();
         Alert::success("Product Created Successfully");
 

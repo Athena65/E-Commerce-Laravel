@@ -24,22 +24,21 @@ footer {
                 No Image
             @endif
         </div>
+
         <div class="col-md-6">
             <h2 class="p-3 mb-2 bg-warning text-dark"> {{ $product->name }}</h2>
             <p class="p-3 mb-2 bg-danger text-white">{{ $product->description }}</p>
             <p class="p-3 mb-2 bg-info text-dark"><s>Price: ${{ $product->price }}</s></p>
-            <p class="p-3 mb-2 bg-primary text-white">Discount: ${{ $product->discount }}</p>
     </br></br>
             <p class="p-3 mb-2 bg-danger text-white">This Product Created with Natural Components </p>
         </div>
         <div class="col-md-6">
             <div class="p-3 mb-2 bg-danger text-white">Remember Tobacco Products Kills</div>
         </div>
-
     </div>
         </div>
         <footer>
-            
+
         </footer>
         <footer>
             <p>&copy; 2023 All rights reserved.</p>

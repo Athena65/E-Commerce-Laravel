@@ -19,12 +19,20 @@ Route::resource('admin',AdminController::class);
 Route::resource('category',CategoryController::class);
 
 Route::group(['namespace' => 'App\Http\Controllers'], function()
-{   
+{
     Route::get('/product/{id}', 'HomeController@show')->name('product.show');
     /**
      * Home Routes
      */
     Route::get('/', 'HomeController@index')->name('home.index');
+    Route::get('/details', 'HomeController@detail')->name('home.detail');
+
+    Route::post('/increaseItem/{id}', 'CartController@increaseItem')->name('increaseItem');
+    Route::post('/decraseItem/{id}', 'CartController@decraseItem')->name('decraseItem');
+    Route::post('/cart', 'CartController@index')->name('cart.index');
+    Route::get('/buyComponent/{id}', 'CartController@buyComponent')->name('buyComponent');
+    Route::post('/checkout/{id}', 'StripeController@checkout')->name('stripe.checkout');
+
     //Route::get('/products', [ProductController::class, 'index'])->name('home.index');
 
     Route::group(['middleware' => ['guest']], function() {
@@ -46,6 +54,6 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
         /**
          * Logout Routes
          */
-        Route::get('/logout', 'LogoutController@perform')->name('logout.perform');
+        Route::post('/logout', 'LogoutController@perform')->name('logout.perform');
     });
 });

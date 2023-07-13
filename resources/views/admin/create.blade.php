@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <title>Create Product</title>
+    <link rel="icon" type="image/png" href="images/images.png">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
 
@@ -42,6 +43,15 @@
                         <div class="alert alert-danger mt-1 mb-1">{{$$message}}</div>
                         @enderror
                     </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col md-12">
+                <div class="form-group">
+                        <strong>Product SubCategory:</strong>
+                        <input type="text" name="sub_category" class="form-control" placeholder="Product SubCategory">
+                        @error('sub_category')
+                        <div class="alert alert-danger mt-1 mb-1">{{$$message}}</div>
+                        @enderror
+                </div>
                 </div>
                 <div class="col-xs-12 col-sm-12 col md-12">
                     <div class="form-group">

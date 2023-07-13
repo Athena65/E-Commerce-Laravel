@@ -15,9 +15,34 @@ class DatabaseSeeder extends Seeder
      * @return void
      */
     
-    public function run():void
+    public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        // Kategorileri ve alt kategorileri oluştur
+        $categories = [
+            [
+                'name' => 'Kategori 1',
+                'subCategories' => [
+                    ['name' => 'Alt Kategori 1-1'],
+                    ['name' => 'Alt Kategori 1-2'],
+                ]
+            ],
+            [
+                'name' => 'Kategori 2',
+                'subCategories' => [
+                    ['name' => 'Alt Kategori 2-1'],
+                    ['name' => 'Alt Kategori 2-2'],
+                    ['name' => 'Alt Kategori 2-3'],
+                ]
+            ],
+        ];
+
+        foreach ($categories as $categoryData) {
+            $category = Category::create(['name' => $categoryData['name']]);
+
+            foreach ($categoryData['subCategories'] as $subCategoryData) {
+                $category->subCategories()->create(['name' => $subCategoryData['name']]);
+            }
+        }
 
     }
 }
