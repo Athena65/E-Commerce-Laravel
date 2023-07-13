@@ -22,21 +22,33 @@ class CartController extends Controller
 
         return view('cart.index',compact('products','categories','subcategories'));
     }
-    public function cart()
+    public function addToCart($id)
     {
-        return view('cart');
+        $product = Product::findOrFail($id);
+
+        $cart = session()->get('cart', []);
+
+        if(isset($cart[$id])) {
+            $cart[$id]['quantity']++;
+        }  else {
+            $cart[$id] = [
+                "id"=>$product->id,
+                "name" => $product->name,
+                "image" => $product->image,
+                "price" => $product->price,
+                "quantity" => 1
+            ];
+        }
+
+        session()->put('cart', $cart);
+        return redirect()->back()->with('success', 'Product add to cart successfully!');
     }
-    public function buyComponent($id)
+
+    public function buyComponent()
     {
-        $product=Product::find($id);
-        $categories = Category::all();
-
-        $subcategories = SubCategory::all();
-        $cart = session()->get('cart');
-        if ($cart == null)
-            $cart = [];
-
-        return view('cart.index',compact('product','categories','subcategories'));
+        $categories=Category::all();
+        $subcategories=Category::all();
+        return view('cart.index',compact('categories','subcategories'));
     }
     public function increaseItem($id)
     {

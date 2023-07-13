@@ -30,7 +30,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
     Route::post('/increaseItem/{id}', 'CartController@increaseItem')->name('increaseItem');
     Route::post('/decraseItem/{id}', 'CartController@decraseItem')->name('decraseItem');
     Route::post('/cart', 'CartController@index')->name('cart.index');
-    Route::get('/buyComponent/{id}', 'CartController@buyComponent')->name('buyComponent');
+    Route::post('/addToCart/{id}', 'CartController@addToCart')->name('addToCart');
+    Route::get('/buyComponent', 'CartController@buyComponent')->name('buyComponent');
     Route::post('/checkout/{id}', 'StripeController@checkout')->name('stripe.checkout');
 
     //Route::get('/products', [ProductController::class, 'index'])->name('home.index');

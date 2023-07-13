@@ -187,29 +187,32 @@
                         </tr>
                     </thead>
                     <tbody class="align-middle">
-                        <tr>
-                            <td class="align-middle"><img src="{{ asset('storage/'.$product->image) }}" alt="" style="width: 50px;"> Colorful Stylish Shirt</td>
-                            <td class="align-middle">{{ $product->discount }}</td>
-                            <td class="align-middle">
-                                <div class="card-footer d-flex justify-content-between bg-light border">
-
-                                    <div class="btn-group">
-                                        <form action="{{route('increaseItem',$product->id)}}" method="POST">
-                                            @csrf
-                                        <button type="submit">Add to Cart</button>
-                                            </form>
-                                    </div>
-                                    <div class="btn-group">
-                                        <form action="{{route('decraseItem',$product->id)}}" method="POST">
-                                            @csrf
-                                        <button type="submit">Remove from Cart</button>
-                                            </form>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="align-middle">{{ $product->total }}</td>
-                        </tr>
-                    </tbody>
+                        @php $total = 0 @endphp
+       @if(session('cart'))
+           @foreach(session('cart') as $id => $details)
+               @php $total += $details['price'] * $details['quantity'] @endphp
+               <tr data-id="{{ $id }}">
+                   <td data-th="Product">
+                       <div class="row">
+                           <div class="col-sm-3 hidden-xs"><img src="{{ asset('storage/'.$details['image']) }}" width="100" height="100" class="img-responsive"/></div>
+                           <div class="col-sm-9">
+                               <h4 class="nomargin">{{ $details['name'] }}</h4>
+                           </div>
+                       </div>
+                   </td>
+                   <td data-th="Price">${{ $details['price'] }}</td>
+                   <td data-th="Quantity">
+                       <input type="number" value="{{ $details['quantity'] }}" class="form-control quantity cart_update" min="1" />
+                   </td>
+                   <td data-th="Subtotal" class="text-center">${{ $details['price'] * $details['quantity'] }}</td>
+                   <td class="actions" data-th="">
+                       <button class="btn btn-danger btn-sm cart_remove"><i class="fa fa-trash-o"></i> Delete</button>
+                   </td>
+               </tr>
+           @endforeach
+       @endif
+       @php $total += $details['price'] * $details['quantity'] @endphp
+                   </tbody>
                 </table>
             </div>
             <div class="col-lg-4">
@@ -220,7 +223,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-3 pt-1">
                             <h6 class="font-weight-medium">Subtotal</h6>
-                            <h6 class="font-weight-medium">${{$product->total  }}</h6>
+                            <h6 class="font-weight-medium">${{ $details['price'] * $details['quantity'] }}</h6>
                         </div>
                         <div class="d-flex justify-content-between">
                             <h6 class="font-weight-medium">Shipping</h6>
@@ -230,9 +233,9 @@
                     <div class="card-footer border-secondary bg-transparent">
                         <div class="d-flex justify-content-between mt-2">
                             <h5 class="font-weight-bold">Total</h5>
-                            <h5 class="font-weight-bold">${{ $product->total }}</h5>
+                            <h5 class="font-weight-bold">${{ $details['price'] * $details['quantity'] }}</h5>
                         </div>
-                            <form action="{{route('stripe.checkout',$product->id)}}" method="POST">
+                            <form action="{{route('stripe.checkout',$id )}}" method="POST">
                                 @csrf
                           <input type="hidden" name="_token" value="{{csrf_token()}}"/>
                           <button class="btn btn-block btn-primary my-3 py-3" type="submit">Proceed To Checkout</button>

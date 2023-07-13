@@ -93,9 +93,44 @@
                     <a href="" class="text-decoration-none d-block d-lg-none">
                         <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1">B</span>Tobacco</h1>
                     </a>
-                    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
+
+                    <div>
+                        <div class="dropdown">
+                            <button type="button" class="btn btn-success" data-toggle="dropdown">
+                                <i class="fa fa-shopping-cart" aria-hidden="true"></i> Cart <span class="badge badge-pill badge-danger">{{ count((array) session('cart')) }}</span>
+                            </button>
+
+                            <div class="dropdown-menu">
+                                <div class="row total-header-section">
+                                    @php $total = 0 @endphp
+                                    @foreach((array) session('cart') as $id => $details)
+                                        @php $total += $details['price'] * $details['quantity'] @endphp
+                                    @endforeach
+                                    <div class="col-lg-12 col-sm-12 col-12 total-section text-right">
+                                        <p>Total: <span class="text-info">$ {{ $total }}</span></p>
+                                    </div>
+                                </div>
+                                @if(session('cart'))
+                                    @foreach(session('cart') as $id => $details)
+                                        <div class="row cart-detail">
+                                            <div class="col-lg-4 col-sm-4 col-4 cart-detail-img">
+                                                <img width="50px"src="{{ asset('storage/'.$details['image']) }}" />
+                                            </div>
+                                            <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
+                                                <p>{{ $details['name'] }}</p>
+                                                <span class="price text-info"> ${{ $details['price'] }}</span> <span class="count"> Quantity:{{ $details['quantity'] }}</span>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @endif
+                                <div class="row">
+                                    <div class="col-lg-12 col-sm-12 col-12 text-center checkout">
+                                        <a href="{{ route('buyComponent') }}" class="btn btn-primary btn-block">View all</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav mr-auto py-0">
                             <a href="{{route('home.index')}}" class="nav-item nav-link">Home</a>
@@ -144,6 +179,9 @@
                         </div>
                     </div>
             </div>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
         </div>
     </div>
     </div>
@@ -215,7 +253,7 @@
                         </div>
 
                         <div class="btn-group">
-                            <form action="{{route('increaseItem',$product->id)}}" method="POST">
+                            <form action="{{route('addToCart',$product->id)}}" method="POST">
                                 @csrf
                             <button type="submit">Add to Cart</button>
                                 </form>
@@ -259,9 +297,7 @@
                     Distributed By <a href="https://github.com/Athena65" target="_blank">BTobacco</a>
                 </p>
             </div>
-            <div class="col-md-6 px-xl-0 text-center text-md-right">
-                < class="img-fluid" src="img/payments.png" alt="">
-            </div>
+
         </div>
     </div>
     <!-- Footer End -->
