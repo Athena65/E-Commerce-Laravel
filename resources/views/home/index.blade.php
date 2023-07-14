@@ -138,12 +138,19 @@
 
                         <div class="navbar-nav ml-auto py-0">
                             @auth
+                            <li class="list-group-item">Welcome {{ auth()->user()->username }}</li>
 
-                            <li class="list-group-item"> Welcome<br/>{{ auth()->user()->username }}</li>
 
+                            <div class="col-lg-3 col-6 text-right">
+                                <form method="POST" action="{{ route('logout.perform') }}">
+                                                @csrf
 
-                            <div class="text-end">
-                                <a href="{{ route('logout.perform') }}" class="nav-item nav-link">Logout</a>
+                                                <x-dropdown-link :href="route('logout.perform')"
+                                                        onclick="event.preventDefault();
+                                                                    this.closest('form').submit();">
+                                                    {{ __('Log Out') }}
+                                                </x-dropdown-link>
+                                            </form>
                                  </div>
                             @endauth
                                             </div>

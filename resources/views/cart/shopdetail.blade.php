@@ -174,7 +174,6 @@
 
 
     <!-- Cart Start -->
-    @if(session('cart'))
     <div class="container-fluid pt-5">
         <div class="row px-xl-5">
             <div class="col-lg-8 table-responsive mb-5">
@@ -185,48 +184,30 @@
                             <th>Price</th>
                             <th>Quantity</th>
                             <th>Total</th>
-                            <th>Edit</th>
                             <th>Remove</th>
                         </tr>
                     </thead>
                     <tbody class="align-middle">
-                        @php $total = 0; $subtotal=0; @endphp
-                        <div class="row total-header-section">
-                            @php $subtotal = 0 @endphp
-                            @foreach((array) session('cart') as $id => $details)
-                                @php $subtotal += $details['price'] * $details['quantity'] @endphp
-                            @endforeach
-                        </div>
-
-           @foreach(session('cart') as $id => $details)
-               @php $total += $details['price'] * $details['quantity']; @endphp
-               <tr data-id="{{ $id }}">
-                   <td data-th="Product">
-                       <div class="row">
-                           <div class="col-sm-3 hidden-xs"><img src="{{ asset('storage/'.$details['image']) }}" width="100" height="100" class="img-responsive"/></div>
-                           <div class="col-sm-9">
-                               <h4 class="nomargin">{{ $details['name'] }}</h4>
-                           </div>
-                       </div>
-                   </td>
-                   <td data-th="Price">${{ $details['price'] }}</td>
-                   <td data-th="Quantity">
-                       <input type="number" value="{{ $details['quantity'] }}" class="form-control quantity cart_update" min="1" />
-                   </td>
-                   <td data-th="Subtotal" class="text-center">${{ $details['price'] * $details['quantity'] }}</td>
-                   <td class="actions" data-th="">
-                    <button class="btn btn-info btn-sm update-cart" data-id="{{ $id }}">Update</button>
-                   </td>
-                   <td class="actions" data-th="">
-                    <button class="btn btn-danger btn-sm remove-from-cart" data-id="{{ $id }}">Delete</button>
-                   </td>
-               </tr>
-           @endforeach
-
-
-       @php $total += $details['price'] * $details['quantity'] @endphp
-
-                   </tbody>
+                        <tr>
+                            <td class="align-middle"><img src="{{ asset('storage/'.$product->image) }}" alt="" style="width: 50px;"> Colorful Stylish Shirt</td>
+                            <td class="align-middle">{{ $product->discount }}</td>
+                            <td class="align-middle">
+                                <div class="btn-group">
+                                    <form action="{{route('increaseItem',$product->id)}}" method="POST">
+                                        @csrf
+                                    <button type="submit">Add to Cart</button>
+                                        </form>
+                                </div>
+                                <div class="btn-group">
+                                    <form action="{{route('decraseItem',$product->id)}}" method="POST">
+                                        @csrf
+                                    <button type="submit">Remove from Cart</button>
+                                        </form>
+                                </div>
+                            </td>
+                            <td class="align-middle">{{ $product->total }}</td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
             <div class="col-lg-4">
@@ -237,32 +218,27 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-3 pt-1">
                             <h6 class="font-weight-medium">Subtotal</h6>
-                            <h6 class="font-weight-medium">${{ $subtotal }}</h6>
+                            <h6 class="font-weight-medium">{{ $product->total }}</h6>
                         </div>
                         <div class="d-flex justify-content-between">
                             <h6 class="font-weight-medium">Shipping</h6>
-                            <h6 class="font-weight-medium"><del>10</del>$0</h6>
+                            <h6 class="font-weight-medium"><del>$10</del></h6>
                         </div>
                     </div>
                     <div class="card-footer border-secondary bg-transparent">
                         <div class="d-flex justify-content-between mt-2">
                             <h5 class="font-weight-bold">Total</h5>
-                            <h5 class="font-weight-bold">${{ $subtotal }}</h5>
+                            <h5 class="font-weight-bold">{{ $product->total }}</h5>
                         </div>
-                            <form action="{{route('stripe.checkout',$subtotal )}}" method="POST">
-                                @csrf
-                          <input type="hidden" name="_token" value="{{csrf_token()}}"/>
-                          <button class="btn btn-block btn-primary my-3 py-3" type="submit">Proceed To Checkout</button>
-                      </form>
-                  </form>
+                        <form action="{{route('stripe.checkoutOne',$product->id)}}" method="POST">
+                            @csrf
+                            <button class="btn btn-block btn-primary my-3 py-3">Proceed To Checkout</button>
+                            </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    @else
-    <div class="alert alert-info">There is no Products in your basket To Continue shopping go <a href="{{ route('home.index') }}">Home Page</a></div>
-    @endif
     <!-- Cart End -->
 
 
@@ -309,37 +285,7 @@
 
     <!-- Back to Top -->
     <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <script type="text/javascript">
-        $(".update-cart").click(function (e) {
-           e.preventDefault();
-           var ele = $(this);
-            $.ajax({
-               url: '{{ url('update-cart') }}',
-               method: "patch",
-               data: {_token: '{{ csrf_token() }}', id: ele.attr("data-id"), quantity: ele.parents("tr").find(".quantity").val()},
-               success: function (response) {
-                   window.location.reload();
-               }
-            });
-        });
-        $(".remove-from-cart").click(function (e) {
-            e.preventDefault();
-            var ele = $(this);
-            if(confirm("Are you sure")) {
-                $.ajax({
-                    url: '{{ url('remove-from-cart') }}',
-                    method: "DELETE",
-                    data: {_token: '{{ csrf_token() }}', id: ele.attr("data-id")},
-                    success: function (response) {
-                        window.location.reload();
-
-                    }
-                });
-            }
-        });
-    </script>
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>

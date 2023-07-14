@@ -29,10 +29,17 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
 
     Route::post('/increaseItem/{id}', 'CartController@increaseItem')->name('increaseItem');
     Route::post('/decraseItem/{id}', 'CartController@decraseItem')->name('decraseItem');
+    Route::post('/deleteItem/{id}', 'CartController@deleteItem')->name('deleteItem');
+
+    Route::patch('update-cart', 'CartController@update');
+    Route::delete('remove-from-cart', 'CartController@remove');
+
     Route::post('/cart', 'CartController@index')->name('cart.index');
     Route::post('/addToCart/{id}', 'CartController@addToCart')->name('addToCart');
     Route::get('/buyComponent', 'CartController@buyComponent')->name('buyComponent');
+    Route::get('/buyComponent/{id}', 'CartContro ller@buyOneComponent')->name('buyOneComponent');
     Route::post('/checkout/{id}', 'StripeController@checkout')->name('stripe.checkout');
+    Route::post('/checkoutOne/{id}', 'StripeController@checkoutOne')->name('stripe.checkoutOne');
 
     //Route::get('/products', [ProductController::class, 'index'])->name('home.index');
 

@@ -183,7 +183,7 @@
                 <div class="d-flex align-items-center mb-4 pt-2">
                     <div class="card-footer d-flex justify-content-between bg-light border">
                         @csrf
-                        <button class="btn btn-success px-3"><i class="fa fa-shopping-cart mr-1"></i><a href="{{ route('buyComponent',$product->id) }}">Go Payment</a></button>
+                        <button class="btn btn-success px-3"><i class="fa fa-shopping-cart mr-1"></i><a href="{{ route('buyOneComponent',$product->id) }}">Go Payment</a></button>
                 </div>
 
 
